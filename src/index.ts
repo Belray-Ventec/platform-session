@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Cookies from "universal-cookie";
 
 const ID = "geslub-platform-session";
@@ -37,4 +38,13 @@ export const goToLoginWebsite = (redirect?: string | null) => {
       : LOGIN_URL;
 
   window.location.href = url;
+};
+
+export const ChakraProps = () => {
+  const [count, setCount] = useState(0);
+
+  return {
+    count,
+    addCount: () => setCount((prev) => prev + 1),
+  };
 };

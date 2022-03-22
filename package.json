@@ -11,6 +11,9 @@
   "dependencies": {
     "universal-cookie": "4.0.4"
   },
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
   "devDependencies": {
     "@types/universal-cookie": "3.0.0",
     "@typescript-eslint/eslint-plugin": "4.28.3",
