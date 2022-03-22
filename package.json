@@ -1,6 +1,6 @@
 {
   "name": "platform-session",
-  "version": "5.0.0",
+  "version": "1.0.0",
   "description": "Geslub Platform Session",
   "main": "dist/index.js",
   "scripts": {
