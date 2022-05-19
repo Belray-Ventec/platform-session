@@ -1,24 +1,20 @@
 import Cookies from "universal-cookie";
 
 const ID = "geslub-platform-session";
-const DOMAIN = window.location.hostname;
-const LOGIN_URL =
-  DOMAIN === "localhost"
-    ? "http://localhost:3000/login"
-    : "https://geslub.com/login";
 
 const cookies = new Cookies();
 
-interface SessionData {
+export interface Session {
   userId: string;
   authToken: string;
 }
 
-export const setSession = (data: SessionData): void => {
-  cookies.set(ID, data, { domain: DOMAIN });
+export const setSession = (data: Session): void => {
+  const domain = window.location.hostname;
+  cookies.set(ID, data, { domain });
 };
 
-export const getSession = (): SessionData | undefined => {
+export const getSession = (): Session | undefined => {
   return cookies.get(ID);
 };
 
@@ -27,14 +23,25 @@ export const isSessionActive = (): boolean => {
 };
 
 export const removeSession = (): void => {
-  cookies.remove(ID, { domain: DOMAIN });
+  const domain = window.location.hostname;
+  cookies.remove(ID, { domain });
 };
 
-export const goToLoginWebsite = (redirect?: string | null): void => {
-  const url =
-    typeof redirect === "string"
-      ? `${LOGIN_URL}?redirect=${redirect}`
-      : LOGIN_URL;
+export const goToLoginWebsite = (
+  redirect: boolean | string | null | undefined = true
+): void => {
+  const domain = window.location.hostname;
+  const loginUrl =
+    domain === "localhost"
+      ? "http://localhost:3000/login"
+      : "https://geslub.com/login";
+
+  /**
+   * Se redirige al path completo
+   */
+  if (redirect === true) redirect = window.location.href;
+
+  const url = redirect ? `${loginUrl}?redirect=${redirect}` : loginUrl;
 
   window.location.href = url;
 };
