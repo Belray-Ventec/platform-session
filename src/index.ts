@@ -24,7 +24,7 @@ export const isSessionActive = (): boolean => {
 
 export const removeSession = (): void => {
   const domain = window.location.hostname;
-  cookies.remove(ID, { domain });
+  cookies.set(ID, undefined, { domain, maxAge: -1 });
 };
 
 export const goToLoginWebsite = (
