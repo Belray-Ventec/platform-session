@@ -9,6 +9,9 @@
     "prepare": "husky install",
     "release": "release-it"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "universal-cookie": "4.0.4"
   },

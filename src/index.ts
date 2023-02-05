@@ -1,5 +1,6 @@
 import Cookies from "universal-cookie";
 
+const GESLUB_DOMAIN = "geslub.com";
 const ID = "geslub-platform-session";
 
 const cookies = new Cookies();
@@ -10,7 +11,9 @@ export interface Session {
 }
 
 export const setSession = (data: Session): void => {
-  const domain = window.location.hostname;
+  const domain =
+    window.location.hostname === "localhost" ? "localhost" : GESLUB_DOMAIN;
+
   cookies.set(ID, data, { domain });
 };
 
@@ -23,25 +26,21 @@ export const isSessionActive = (): boolean => {
 };
 
 export const removeSession = (): void => {
-  const domain = window.location.hostname;
-  cookies.set(ID, undefined, { domain, maxAge: -1 });
+  const domain =
+    window.location.hostname === "localhost" ? "localhost" : GESLUB_DOMAIN;
+
+  cookies.remove(ID, { domain });
 };
 
-export const goToLoginWebsite = (
-  redirect: boolean | string | null | undefined = true
-): void => {
+export const goToLoginWebsite = (redirect: boolean | string = true): void => {
   const domain = window.location.hostname;
   const loginUrl =
     domain === "localhost"
       ? "http://localhost:3000/login"
       : "https://geslub.com/login";
 
-  /**
-   * Se redirige al path completo
-   */
   if (redirect === true) redirect = window.location.href;
 
   const url = redirect ? `${loginUrl}?redirect=${redirect}` : loginUrl;
-
   window.location.href = url;
 };
