@@ -1,6 +1,6 @@
 {
   "name": "@belray-ventec/platform-session",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Geslub Platform Session",
   "main": "dist/index.js",
   "scripts": {
