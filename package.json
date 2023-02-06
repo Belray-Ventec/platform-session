@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src",
-    "postinstall": "tsc",
+    "build": "tsc",
     "prepare": "husky install",
     "release": "release-it"
   },
