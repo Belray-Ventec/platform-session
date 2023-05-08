@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src",
+    "prebuild": "rimraf dist",
     "build": "tsc",
     "prepare": "husky install",
     "prerelease": "npm run build",
@@ -26,7 +27,8 @@
     "jest": "27.0.6",
     "lint-staged": "12.1.2",
     "prettier": "2.3.2",
-    "release-it": "^15.6.0",
+    "release-it": "15.6.0",
+    "rimraf": "5.0.0",
     "ts-node-dev": "1.1.8",
     "typescript": "4.3.5"
   },
