@@ -7,9 +7,7 @@ export interface AuthProverProps {
   children?: React.ReactNode;
 }
 
-export const AuthProvider = ({
-  children,
-}: AuthProverProps): React.ReactNode => {
+export const AuthProvider = ({ children }: AuthProverProps): JSX.Element => {
   const { session, loading } = useGetSession();
 
   if (loading) return <div>Cargando...</div>;
