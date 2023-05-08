@@ -2,28 +2,31 @@
   "name": "@belray-ventec/platform-session",
   "version": "2.0.1",
   "description": "Geslub Platform Session",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src",
-    "prebuild": "rimraf dist",
-    "build": "tsc",
-    "prepare": "husky install",
+    "prebuild": "rimraf lib",
+    "build": "node build.mjs",
+    "postbuild": "tsc",
     "prerelease": "npm run build",
     "release": "release-it"
   },
   "files": [
-    "dist"
+    "lib"
   ],
   "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "universal-cookie": "4.0.4"
   },
   "devDependencies": {
+    "@types/react": "^18.2.6",
     "@types/universal-cookie": "3.0.0",
     "@typescript-eslint/eslint-plugin": "4.28.3",
     "@typescript-eslint/parser": "4.28.3",
+    "esbuild": "0.17.18",
     "eslint": "7.30.0",
     "eslint-plugin-jest": "24.3.6",
-    "husky": "7.0.4",
     "jest": "27.0.6",
     "lint-staged": "12.1.2",
     "prettier": "2.3.2",
@@ -32,11 +35,7 @@
     "ts-node-dev": "1.1.8",
     "typescript": "4.3.5"
   },
-  "lint-staged": {
-    "*.{js,ts}": "eslint --cache --fix",
-    "*": "prettier --write"
-  },
-  "types": "./dist\\index.d.ts",
+  "types": "./lib\\index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Belray-Ventec/platform-session.git"
