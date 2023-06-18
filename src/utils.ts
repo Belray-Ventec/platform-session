@@ -1,38 +1,12 @@
-import Cookies from "universal-cookie";
-
-const GESLUB_DOMAIN = "geslub.com";
-const ID = "geslub-platform-session";
-
-const cookies = new Cookies();
-
-export interface Session {
-  userId: string;
-  authToken: string;
-}
-
-export const setSession = (data: Session): void => {
-  const domain =
-    window.location.hostname === "localhost" ? "localhost" : GESLUB_DOMAIN;
-
-  cookies.set(ID, data, { domain });
-};
-
-export const getSession = (): Session | undefined => {
-  return cookies.get(ID);
-};
-
-export const isSessionActive = (): boolean => {
-  return Boolean(getSession());
-};
-
-export const removeSession = (): void => {
-  const domain =
-    window.location.hostname === "localhost" ? "localhost" : GESLUB_DOMAIN;
-
-  cookies.remove(ID, { domain });
-};
-
-export const goToLoginWebsite = (redirect: boolean | string = true): void => {
+/**
+ * @description Redirects to login page
+ * @param {boolean | string} redirect - Redirects to the given url
+ * @returns {void}
+ * @example
+ * goToLogin();
+ * goToLogin("https://geslub.com/login");
+ */
+export const goToLogin = (redirect: boolean | string = true): void => {
   const domain = window.location.hostname;
   const loginUrl =
     domain === "localhost"
