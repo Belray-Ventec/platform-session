@@ -21,7 +21,7 @@ export const AuthProvider = ({
   platform,
   children,
 }: AuthProviderProps): JSX.Element => {
-  const { session, user, loading } = useGetSession(platform);
+  const { session, user, loading } = useSession(platform);
 
   if (loading) return <div>Cargando...</div>;
 
@@ -34,7 +34,7 @@ export const AuthProvider = ({
 
 export const useAuth = (): AuthContextProps => useContext(AuthContext);
 
-export const useGetSession = (
+const useSession = (
   platform: Platform
 ): {
   session: Session | null;
