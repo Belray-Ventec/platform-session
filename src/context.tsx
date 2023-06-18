@@ -3,6 +3,8 @@ import { SessionStorage, Session } from "./SessionStorage";
 import { User, UserApi } from "./userApi";
 import { goToLogin } from "./utils";
 
+export type Platform = "home" | "tribolab" | "planning" | "stocks" | "library";
+
 interface AuthContextProps {
   session?: Session | null;
   user?: User | null;
@@ -10,12 +12,16 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps>({});
 
-export interface AuthProverProps {
+export interface AuthProviderProps {
+  platform: Platform;
   children?: React.ReactNode;
 }
 
-export const AuthProvider = ({ children }: AuthProverProps): JSX.Element => {
-  const { session, user, loading } = useGetSession();
+export const AuthProvider = ({
+  platform,
+  children,
+}: AuthProviderProps): JSX.Element => {
+  const { session, user, loading } = useGetSession(platform);
 
   if (loading) return <div>Cargando...</div>;
 
@@ -28,7 +34,9 @@ export const AuthProvider = ({ children }: AuthProverProps): JSX.Element => {
 
 export const useAuth = (): AuthContextProps => useContext(AuthContext);
 
-export const useGetSession = (): {
+export const useGetSession = (
+  platform: Platform
+): {
   session: Session | null;
   user: User | null;
   loading: boolean;
@@ -47,12 +55,29 @@ export const useGetSession = (): {
       const userId = session.userId;
       const user = await UserApi.get(session.authToken, userId);
 
+      if (!userHasPlatformAuth(user)) {
+        SessionStorage.remove();
+        return goToLogin();
+      }
+
       setUser(user);
       setSession(session);
       setLoading(false);
     } else {
       goToLogin();
     }
+  };
+
+  const userHasPlatformAuth = async (user: User) => {
+    const platformAuths = {
+      home: user.homeConfig.authorization,
+      planning: user.planningConfig.authorization,
+      tribolab: user.tribolabConfig.authorization,
+      stocks: user.stocksConfig.authorization,
+      library: user.libraryConfig.authorization,
+    };
+
+    return platformAuths[platform];
   };
 
   return { session, user, loading };
