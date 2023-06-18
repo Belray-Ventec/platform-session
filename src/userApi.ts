@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "https://geslub-api-2licfeyhca-tl.a.run.app/auth";
+const URL = "https://geslub-api-2licfeyhca-tl.a.run.app/users";
 
 export interface User {
   id: string;
@@ -174,8 +174,12 @@ export interface RelUserZones {
   userId: string;
 }
 
-const get = async (id: string): Promise<User> => {
-  const res = await axios.get(`${URL}?id=${id}`);
+const get = async (token: string, id: string): Promise<User> => {
+  const res = await axios.get(`${URL}?id=${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return res.data;
 };
 

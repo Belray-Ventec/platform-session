@@ -45,7 +45,7 @@ export const useGetSession = (): {
     const session = SessionStorage.get();
     if (session) {
       const userId = session.userId;
-      const user = await UserApi.get(userId);
+      const user = await UserApi.get(session.authToken, userId);
 
       setUser(user);
       setSession(session);
