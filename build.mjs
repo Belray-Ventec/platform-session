@@ -8,4 +8,5 @@ await esbuild.build({
   bundle: true,
   target: "es2020",
   outdir: "lib",
+  external: ["react", "react-dom"],
 });
