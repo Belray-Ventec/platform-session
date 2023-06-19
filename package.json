@@ -15,6 +15,7 @@
     "lib"
   ],
   "dependencies": {
+    "@belray-ventec/geslub-ui-react": "0.6.6",
     "axios": "1.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

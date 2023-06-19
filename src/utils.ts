@@ -1,3 +1,5 @@
+import { SessionStorage } from "./SessionStorage";
+
 /**
  * @description Redirects to login page
  * @param {boolean | string} redirect - Redirects to the given url
@@ -17,4 +19,13 @@ export const goToLogin = (redirect: boolean | string = true): void => {
 
   const url = redirect ? `${loginUrl}?redirect=${redirect}` : loginUrl;
   window.location.href = url;
+};
+
+export const logout = ({
+  redirect = true,
+}: {
+  redirect?: boolean | string;
+} = {}): void => {
+  SessionStorage.remove();
+  goToLogin(redirect);
 };
