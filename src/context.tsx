@@ -15,13 +15,28 @@ const AuthContext = createContext<AuthContextProps>({});
 export interface AuthProviderProps {
   platform: Platform;
   children?: React.ReactNode;
+  onLoaded?: (v: { session: Session; user: User } | null) => void;
 }
 
 export const AuthProvider = ({
   platform,
   children,
+  onLoaded,
 }: AuthProviderProps): JSX.Element => {
   const { session, user, loading } = useSession(platform);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (session && user) {
+      onLoaded?.({
+        session,
+        user,
+      });
+    } else {
+      onLoaded?.(null);
+    }
+  }, [loading]);
 
   if (loading) return <div>Cargando...</div>;
 
