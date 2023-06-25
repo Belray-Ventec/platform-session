@@ -68,9 +68,11 @@ const useSession = (
       const userId = session.userId;
       const user = await UserApi.get(session.authToken, userId);
 
-      if (!userHasPlatformAuth(user)) {
-        SessionStorage.remove();
-        return goToLogin();
+      if (!userHasPlatformAuth(user)) return goToLogin();
+
+      if (!session.zone && user.zones?.[0]?.id) {
+        session.zone = user.zones[0].id;
+        SessionStorage.set(session);
       }
 
       setUser(user);
