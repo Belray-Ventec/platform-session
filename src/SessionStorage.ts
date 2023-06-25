@@ -8,10 +8,7 @@ const cookies = new Cookies();
 export interface Session {
   userId: string;
   authToken: string;
-  zoneSelected?: {
-    id: string;
-    name: string;
-  } | null;
+  zone?: string | null;
 }
 
 /**

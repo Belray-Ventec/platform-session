@@ -8,6 +8,7 @@ export type Platform = "home" | "tribolab" | "planning" | "stocks" | "library";
 interface AuthContextProps {
   session?: Session | null;
   user?: User | null;
+  onChangeZone?: (id: string) => void;
 }
 
 const AuthContext = createContext<AuthContextProps>({});
@@ -23,7 +24,7 @@ export const AuthProvider = ({
   children,
   onSession,
 }: AuthProviderProps): JSX.Element => {
-  const { session, user, loading } = useSession(platform);
+  const { session, user, loading, onChangeZone } = useSession(platform);
 
   useEffect(() => {
     if (!loading && session && user) {
@@ -37,7 +38,7 @@ export const AuthProvider = ({
   if (loading) return <div>Cargando...</div>;
 
   return (
-    <AuthContext.Provider value={{ session, user }}>
+    <AuthContext.Provider value={{ session, user, onChangeZone }}>
       {children}
     </AuthContext.Provider>
   );
@@ -51,6 +52,7 @@ const useSession = (
   session: Session | null;
   user: User | null;
   loading: boolean;
+  onChangeZone: (id: string) => void;
 } => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -79,6 +81,14 @@ const useSession = (
     }
   };
 
+  const onChangeZone = (zone: string) => {
+    if (session) {
+      const newSession = { ...session, zone };
+      SessionStorage.set(newSession);
+      setSession(newSession);
+    }
+  };
+
   const userHasPlatformAuth = async (user: User) => {
     const platformAuths = {
       home: user.homeConfig.authorization,
@@ -91,5 +101,5 @@ const useSession = (
     return platformAuths[platform];
   };
 
-  return { session, user, loading };
+  return { session, user, loading, onChangeZone };
 };
