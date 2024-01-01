@@ -3,7 +3,13 @@ import { SessionStorage, Session } from "./SessionStorage";
 import { User, UserApi } from "./userApi";
 import { goToLogin } from "./utils";
 
-export type Platform = "home" | "tribolab" | "planning" | "stocks" | "library";
+export type Platform =
+  | "home"
+  | "tribolab"
+  | "planning"
+  | "stocks"
+  | "library"
+  | "admin";
 
 interface AuthContextProps {
   session?: Session | null;
@@ -46,14 +52,14 @@ export const AuthProvider = ({
 
 export const useAuth = (): AuthContextProps => useContext(AuthContext);
 
-const useSession = (
-  platform: Platform
-): {
+export interface SessionInfo {
   session: Session | null;
   user: User | null;
   loading: boolean;
   onChangeZone: (id: string) => void;
-} => {
+}
+
+const useSession = (platform: Platform): SessionInfo => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,23 +70,22 @@ const useSession = (
 
   const loadSession = async () => {
     const session = SessionStorage.get();
-    if (session) {
-      const userId = session.userId;
-      const user = await UserApi.get(session.authToken, userId);
 
-      if (!userHasPlatformAuth(user)) return goToLogin();
+    if (!session) return goToLogin();
 
-      if (!session.zone && user.zones?.[0]?.id) {
-        session.zone = user.zones[0].id;
-        SessionStorage.set(session);
-      }
+    const userId = session.userId;
+    const user = await UserApi.get(session.authToken, userId);
 
-      setUser(user);
-      setSession(session);
-      setLoading(false);
-    } else {
-      goToLogin();
+    if (!userHasPlatformAuth(user)) return goToLogin();
+
+    if (!session.zone && user.zones?.[0]?.id) {
+      session.zone = user.zones[0].id;
+      SessionStorage.set(session);
     }
+
+    setUser(user);
+    setSession(session);
+    setLoading(false);
   };
 
   const onChangeZone = (zone: string) => {
@@ -98,6 +103,7 @@ const useSession = (
       tribolab: user.tribolabConfig.authorization,
       stocks: user.stocksConfig.authorization,
       library: user.libraryConfig.authorization,
+      admin: true, // TODO user.adminConfig.authorization,
     };
 
     return platformAuths[platform];
