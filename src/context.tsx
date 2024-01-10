@@ -57,6 +57,7 @@ export interface SessionInfo {
   user: User | null;
   loading: boolean;
   onChangeZone: (id: string) => void;
+  onLogout: () => void;
 }
 
 const useSession = (platform: Platform): SessionInfo => {
@@ -96,6 +97,11 @@ const useSession = (platform: Platform): SessionInfo => {
     }
   };
 
+  const onLogout = () => {
+    SessionStorage.remove();
+    goToLogin();
+  };
+
   const userHasPlatformAuth = async (user: User) => {
     const platformAuths = {
       home: user.homeConfig.authorization,
@@ -109,5 +115,5 @@ const useSession = (platform: Platform): SessionInfo => {
     return platformAuths[platform];
   };
 
-  return { session, user, loading, onChangeZone };
+  return { session, user, loading, onChangeZone, onLogout };
 };
