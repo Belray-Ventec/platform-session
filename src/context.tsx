@@ -15,6 +15,7 @@ interface AuthContextProps {
   session?: Session | null;
   user?: User | null;
   onChangeZone?: (id: string) => void;
+  onLogout?: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps>({});
@@ -30,7 +31,8 @@ export const AuthProvider = ({
   children,
   onSession,
 }: AuthProviderProps): JSX.Element => {
-  const { session, user, loading, onChangeZone } = useSession(platform);
+  const { session, user, loading, onChangeZone, onLogout } =
+    useSession(platform);
 
   useEffect(() => {
     if (!loading && session && user) {
@@ -44,7 +46,7 @@ export const AuthProvider = ({
   if (loading) return <div>Cargando...</div>;
 
   return (
-    <AuthContext.Provider value={{ session, user, onChangeZone }}>
+    <AuthContext.Provider value={{ session, user, onChangeZone, onLogout }}>
       {children}
     </AuthContext.Provider>
   );
