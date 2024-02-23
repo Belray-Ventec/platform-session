@@ -1,11 +1,3 @@
 # geslub-platform-session
 
-Librería de manipulación de sesión de usuario entre subdominios de Geslub.
-
-## Instalación
-
-- `npm install git+https://github.com/Belray-Ventec/platform-session.git`
-
-## Crear nueva version
-
-- `npm run release`
+[Doc.](https://www.notion.so/geslub-platform/belray-ventec-platform-session-1eeaed2fa4524172965765a63c1decd4?pvs=4)
