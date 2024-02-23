@@ -18,7 +18,10 @@ export const set = (data: Session): void => {
   const domain =
     window.location.hostname === "localhost" ? "localhost" : GESLUB_DOMAIN;
 
-  cookies.set(ID, data, { domain });
+  cookies.set(ID, data, {
+    domain,
+    maxAge: 60 * 60 * 24 * 365 * 100,
+  });
 };
 
 /**
