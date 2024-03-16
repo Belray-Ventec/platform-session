@@ -183,6 +183,14 @@ const get = async (token: string, id: string): Promise<User> => {
   return res.data;
 };
 
+const getByToken = async (token: string): Promise<User> => {
+  const res = await axios.get(`${URL}/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
 export const UserApi = {
   get,
+  getByToken,
 };

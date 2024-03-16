@@ -62,6 +62,8 @@ export interface SessionInfo {
   onLogout: () => void;
 }
 
+const QUERY_PARAM_TOKEN = "token";
+
 const useSession = (platform: Platform): SessionInfo => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -72,12 +74,21 @@ const useSession = (platform: Platform): SessionInfo => {
   }, []);
 
   const loadSession = async () => {
-    const session = SessionStorage.get();
+    let session = SessionStorage.get();
+
+    const urlToken = new URLSearchParams(window.location.search).get(
+      QUERY_PARAM_TOKEN
+    );
+
+    if (urlToken) {
+      const user = await UserApi.getByToken(urlToken);
+      session = { userId: user.id, authToken: urlToken };
+      SessionStorage.set(session);
+    }
 
     if (!session) return goToLogin();
 
-    const userId = session.userId;
-    const user = await UserApi.get(session.authToken, userId);
+    const user = await UserApi.getByToken(session.authToken);
 
     if (!userHasPlatformAuth(user)) return goToLogin();
 
