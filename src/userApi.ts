@@ -175,6 +175,7 @@ export interface RelUserZones {
 const URL = "https://geslub-api-2licfeyhca-tl.a.run.app/users";
 
 const getByToken = async (token: string): Promise<User> => {
+  // TODO remove token from query string when task is fixed and only use headers is allowed
   const res = await axios.get(`${URL}?token=${token}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
