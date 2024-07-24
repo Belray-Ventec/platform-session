@@ -1,6 +1,5 @@
 import Cookies from "universal-cookie";
 
-const GESLUB_DOMAIN = "geslub.com";
 const ID = "geslub-platform-session";
 
 const cookies = new Cookies();
@@ -12,11 +11,19 @@ export interface Session {
 }
 
 /**
+ *
+ * @returns {string} - Returns the main domain like "localhost" or "geslub.com" (without subdomains)
+ */
+export const getMainDomain = (): string => {
+  const domain = window.location.hostname;
+  return domain.split(".").slice(-2).join(".");
+};
+
+/**
  * Set the session in the cookies
  */
 export const set = (data: Session): void => {
-  const domain =
-    window.location.hostname === "localhost" ? "localhost" : GESLUB_DOMAIN;
+  const domain = getMainDomain();
 
   cookies.set(ID, data, {
     domain,
@@ -42,9 +49,7 @@ export const isSessionActive = (): boolean => {
  * Remove the session from the cookies
  */
 export const remove = (): void => {
-  const domain =
-    window.location.hostname === "localhost" ? "localhost" : GESLUB_DOMAIN;
-
+  const domain = getMainDomain();
   cookies.remove(ID, { domain });
 };
 

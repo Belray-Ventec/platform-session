@@ -1,4 +1,4 @@
-import { SessionStorage } from "./SessionStorage";
+import { SessionStorage, getMainDomain } from "./SessionStorage";
 
 /**
  * @description Redirects to login page
@@ -9,11 +9,11 @@ import { SessionStorage } from "./SessionStorage";
  * goToLogin("https://geslub.com/login");
  */
 export const goToLogin = (redirect: boolean | string = true): void => {
-  const domain = window.location.hostname;
+  const domain = getMainDomain();
   const loginUrl =
     domain === "localhost"
-      ? "http://localhost:3000/login"
-      : "https://geslub.com/login";
+      ? `${window.location}/login`
+      : `https://${domain}/login`;
 
   if (redirect === true) redirect = window.location.href;
 
