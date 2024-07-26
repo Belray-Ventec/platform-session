@@ -122,7 +122,7 @@ const useSession = (platform: Platform): SessionInfo => {
       tribolab: user.tribolabConfig.authorization,
       stocks: user.stocksConfig.authorization,
       library: user.libraryConfig.authorization,
-      admin: true, // TODO user.adminConfig.authorization,
+      admin: user.adminConfig.authorization,
     };
 
     return platformAuths[platform];

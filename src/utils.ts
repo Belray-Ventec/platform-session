@@ -12,7 +12,7 @@ export const goToLogin = (redirect: boolean | string = true): void => {
   const domain = getMainDomain();
   const loginUrl =
     domain === "localhost"
-      ? `${window.location}/login`
+      ? "http://localhost:3000/login"
       : `https://${domain}/login`;
 
   if (redirect === true) redirect = window.location.href;

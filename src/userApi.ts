@@ -26,6 +26,7 @@ export interface User {
   libraryConfig: LibraryConfig;
   stocksConfig: StocksConfig;
   tribolabConfig: TribolabConfig;
+  adminConfig: AdminConfig;
   zones: Zone[];
 }
 
@@ -141,6 +142,23 @@ export interface TribolabConfig {
 }
 
 export interface Role7 {
+  id: string;
+  label: string;
+  platformId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminConfig {
+  id: string;
+  roleId: string;
+  authorization: boolean;
+  createdAt: string;
+  updatedAt: string;
+  role: AdminRoles;
+}
+
+export interface AdminRoles {
   id: string;
   label: string;
   platformId: string;
