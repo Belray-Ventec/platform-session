@@ -16,7 +16,15 @@ export interface Session {
  */
 export const getMainDomain = (): string => {
   const domain = window.location.hostname;
-  return domain.split(".").slice(-2).join(".");
+
+  const mainDomain = domain.split(".").slice(-2).join(".");
+
+  // Si el dominio es web.app(Por si es en preview), devolvemos el subdominio completo
+  if (mainDomain === "web.app") {
+    return domain;
+  }
+
+  return mainDomain;
 };
 
 /**
