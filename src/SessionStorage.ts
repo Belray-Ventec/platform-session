@@ -16,22 +16,19 @@ export interface Session {
  */
 export const getMainDomain = (): string => {
   const domain = window.location.hostname;
-
-  const mainDomain = domain.split(".").slice(-2).join(".");
-
-  // Si el dominio es web.app(Por si es en preview), devolvemos el subdominio completo
-  if (mainDomain === "web.app") {
-    return domain;
-  }
-
-  return mainDomain;
+  return domain.split(".").slice(-2).join(".");
 };
 
 /**
  * Set the session in the cookies
  */
 export const set = (data: Session): void => {
-  const domain = getMainDomain();
+  let domain = getMainDomain();
+
+   // Si el dominio es web.app(Por si es en preview), devolvemos el subdominio completo
+   if (domain === "web.app") {
+    domain = window.location.hostname;
+  }
 
   cookies.set(ID, data, {
     domain,
