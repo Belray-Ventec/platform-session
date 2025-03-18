@@ -115,7 +115,7 @@ const useSession = (platform: Platform): SessionInfo => {
     goToLogin();
   };
 
-  const userHasPlatformAuth = async (user: User) => {
+  const userHasPlatformAuth = (user: User) => {
     const platformAuths = {
       home: user.homeConfig.authorization,
       planning: user.planningConfig.authorization,
