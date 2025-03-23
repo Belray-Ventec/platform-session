@@ -190,10 +190,13 @@ export interface RelUserZones {
   userId: string;
 }
 
-const URL = "https://geslub-service-2licfeyhca-tl.a.run.app/me";
+const URL = "https://geslub-service-2licfeyhca-tl.a.run.app";
 
-const getByToken = async (token: string): Promise<User> => {
-  const res = await axios.get(URL, {
+const getByToken = async (
+  token: string,
+  baseUrl?: string
+): Promise<User> => {
+  const res = await axios.get(`${baseUrl || URL}/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data;

@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { SessionStorage, Session } from "./SessionStorage";
 import { User, UserApi } from "./userApi";
 import { goToLogin } from "./utils";
@@ -24,15 +29,17 @@ export interface AuthProviderProps {
   platform: Platform;
   children?: React.ReactNode;
   onSession?: (v: { session: Session; user: User }) => void;
+  baseUrl?: string;
 }
 
 export const AuthProvider = ({
   platform,
   children,
   onSession,
+  baseUrl,
 }: AuthProviderProps): JSX.Element => {
   const { session, user, loading, onChangeZone, onLogout } =
-    useSession(platform);
+    useSession(platform, baseUrl);
 
   useEffect(() => {
     if (!loading && session && user) {
@@ -46,13 +53,16 @@ export const AuthProvider = ({
   if (loading) return <div>Cargando...</div>;
 
   return (
-    <AuthContext.Provider value={{ session, user, onChangeZone, onLogout }}>
+    <AuthContext.Provider
+      value={{ session, user, onChangeZone, onLogout }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextProps => useContext(AuthContext);
+export const useAuth = (): AuthContextProps =>
+  useContext(AuthContext);
 
 export interface SessionInfo {
   session: Session | null;
@@ -64,7 +74,10 @@ export interface SessionInfo {
 
 const QUERY_PARAM_TOKEN = "token";
 
-const useSession = (platform: Platform): SessionInfo => {
+const useSession = (
+  platform: Platform,
+  baseUrl?: string
+): SessionInfo => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -81,14 +94,14 @@ const useSession = (platform: Platform): SessionInfo => {
     );
 
     if (urlToken) {
-      const user = await UserApi.getByToken(urlToken);
+      const user = await UserApi.getByToken(urlToken, baseUrl);
       session = { userId: user.id, authToken: urlToken };
       SessionStorage.set(session);
     }
 
     if (!session) return goToLogin();
 
-    const user = await UserApi.getByToken(session.authToken);
+    const user = await UserApi.getByToken(session.authToken, baseUrl);
 
     if (!userHasPlatformAuth(user)) return goToLogin();
 
