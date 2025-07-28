@@ -105,7 +105,10 @@ const useSession = (
 
     if (!userHasPlatformAuth(user)) return goToLogin();
 
-    if (!session.zone && user.zones?.[0]?.id) {
+    const userZoneIds = user.zones?.map(zone => zone.id) || [];
+    const needsZoneUpdate = !session.zone || !userZoneIds.includes(session.zone);
+    
+    if (needsZoneUpdate && user.zones?.[0]?.id) {
       session.zone = user.zones[0].id;
       SessionStorage.set(session);
     }
