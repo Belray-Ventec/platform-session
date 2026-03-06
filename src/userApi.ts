@@ -176,6 +176,7 @@ export interface Zone {
   scheduledActWaivableHolydays: boolean;
   scheduledActInalienableHolydays: boolean;
   validateSchedActByNfc: boolean;
+  useEquipmentCodes: boolean;
   enabled: boolean;
   typeId: string;
   createdAt: string;
