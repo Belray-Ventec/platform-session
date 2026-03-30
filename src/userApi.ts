@@ -182,6 +182,7 @@ export interface Zone {
   createdAt: string;
   updatedAt: string;
   RelUserZones: RelUserZones;
+  technicalObservationInputs?: TechnicalObservationInputs[];
 }
 
 export interface RelUserZones {
@@ -191,11 +192,26 @@ export interface RelUserZones {
   userId: string;
 }
 
+export interface TechnicalObservationInputs {
+  id: string;
+  label: string;
+  options: string[];
+  typeId: string;
+  type: {
+    id: string;
+    label: string;
+  };
+  relZoneTechnicalObservationInput?: {
+    isRequired: boolean;
+    order: number;
+  };
+}
+
 const URL = "https://geslub-service-2licfeyhca-tl.a.run.app";
 
 const getByToken = async (
   token: string,
-  baseUrl?: string
+  baseUrl?: string,
 ): Promise<User> => {
   const res = await axios.get(`${baseUrl || URL}/me`, {
     headers: { Authorization: `Bearer ${token}` },
