@@ -44,8 +44,7 @@ const getCookieDomain = (): string => {
 
 /**
  * Rutas anidadas de la URL actual donde una versión anterior pudo dejar una
- * cookie duplicada. Para `/activities/scheduled-activities` devuelve
- * `["/activities/scheduled-activities", "/activities"]`.
+ * cookie duplicada.
  */
 const getLegacyPaths = (): string[] => {
   const segments = window.location.pathname.split("/").filter(Boolean);
