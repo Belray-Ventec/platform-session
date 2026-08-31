@@ -87,6 +87,8 @@ const useSession = (
   }, []);
 
   const loadSession = async () => {
+    SessionStorage.normalizePath();
+
     let session = SessionStorage.get();
 
     const urlToken = new URLSearchParams(window.location.search).get(
@@ -95,7 +97,10 @@ const useSession = (
 
     if (urlToken) {
       const user = await UserApi.getByToken(urlToken, baseUrl);
-      session = { userId: user.id, authToken: urlToken };
+      // Conservamos la zona seleccionada si el token es del mismo usuario. Si
+      // no lo es, needsZoneUpdate la ajusta más abajo a una zona válida.
+      const zone = session?.userId === user.id ? session.zone : undefined;
+      session = { userId: user.id, authToken: urlToken, zone };
       SessionStorage.set(session);
     }
 
